@@ -23,7 +23,7 @@ let hideawayCardData: PropertyCardProps['property'] = {
 }
 
 try {
-	const response = await fetch(`${currentPath}/api/images/home.json`);
+	const response = await fetch(`${currentPath}api/images/home.json`);
 
 	if (!response.ok) {
 		console.log(response);
@@ -37,6 +37,8 @@ try {
 	hideawayCardData.imgUrl = homePgImgs.hideawayImgUrl;
 
 
+} catch (error) {
+	console.error('Failed to fetch data', error);
 }
 ---
 

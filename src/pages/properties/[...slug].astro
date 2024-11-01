@@ -17,7 +17,7 @@ let galleryUrls: ImageObject[] = [];
 
 const currentPath = Astro.url.pathname;
 try {
-	const response = await fetch(`${currentPath}/api/images/${slug}.json`);
+	const response = await fetch(`${currentPath}api/images/${slug}.json`);
 	if (!response.ok) {
 		console.log(response);
 		console.error('Failed to fetch data');

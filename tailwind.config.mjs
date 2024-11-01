@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+import plugin from 'tailwindcss/plugin';
+
 export default {
 	darkMode: ['class'],
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
@@ -123,7 +126,6 @@ export default {
 					borderColor: theme('colors.card-border'),
 					innerBorderRadius: 'calc(var(--radius) - var(--card-border-width))',
 				},
-				
 			});
 		}),
 	],

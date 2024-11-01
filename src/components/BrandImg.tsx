@@ -1,6 +1,6 @@
 import * as React from 'react';
-import logo_no_trees from '../img/svg/logo_no_trees.svg?url';
-import logo_with_trees from '../img/svg/logo.svg?url';
+import logo_no_trees from '../image/svg/logo_no_trees.svg?url';
+import logo_with_trees from '../image/svg/logo.svg?url';
 
 const BrandImg: React.FC = () => {
 	const [isSmallView, setIsSmallView] = React.useState(false);
