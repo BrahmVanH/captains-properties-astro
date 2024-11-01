@@ -66,3 +66,12 @@ interface Property {
 	damageAndIncidentals: string;
 	importantInformation: string[];
 }
+
+export interface PropertyCardProps {
+	property: {
+		title: string;
+		description: string;
+		urlEndpoint: string;
+		imgUrl?: string;
+	};
+}

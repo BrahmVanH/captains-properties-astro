@@ -1,8 +1,26 @@
 ---
+import PropertyCard from "@/components/PropertyCard";
+import type { PropertyCardProps } from "@/types";
 import Layout from "@layouts/Layout.astro"
 
 
 const currentPath = Astro.url.pathname;
+
+let headerUrl: string;
+
+let cottageCardData: PropertyCardProps['property'] = {
+	title: 'Cottage',
+	imgUrl: "",
+	description: 'This is the description for the cottage',
+	urlEndpoint: '/properties/captains-cottage'
+}
+
+let hideawayCardData: PropertyCardProps['property'] = {
+	title: 'Hideaway',
+	imgUrl: "",
+	description: 'This is the description for the hideaway',
+	urlEndpoint: '/properties/captains-hideaway'
+}
 
 try {
 	const response = await fetch(`${currentPath}/api/images/home.json`);
@@ -12,14 +30,20 @@ try {
 		console.error('Failed to fetch data');
 	}
 	const data = await response.json();
+	const homePgImgs = data.getHomePgImgs;
+
+	headerUrl = homePgImgs.headerImgUrl;
+	cottageCardData.imgUrl = homePgImgs.cottageImgUrl;
+	hideawayCardData.imgUrl = homePgImgs.hideawayImgUrl;
 
 
 }
 ---
 
+<Layout title="Captain's Rentals">
 
-<main>
-
+	<main>
+		
 		<img />
 		<div>
 			<div>
@@ -29,7 +53,9 @@ try {
 			</div>
 		</div>
 		<div>
-			
+			<PropertyCard property={cottageCardData}/>
+			<PropertyCard property={hideawayCardData}/>
 		</div>
-
-</main>
+		
+	</main>
+</Layout>

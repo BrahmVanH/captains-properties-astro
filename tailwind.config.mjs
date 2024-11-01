@@ -123,6 +123,7 @@ export default {
 					borderColor: theme('colors.card-border'),
 					innerBorderRadius: 'calc(var(--radius) - var(--card-border-width))',
 				},
+				
 			});
 		}),
 	],
