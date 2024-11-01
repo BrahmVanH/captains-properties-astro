@@ -32,7 +32,7 @@ function PropertyCard({ property }: PropertyCardProps) {
 					</a>
 				</div>
 			</CardContent>
-			<img alt='captains hideaway house from the beach' src={property.imgUrl} className='rounded-lg self-center lg-self-start sm-w-5/6' />
+			<img alt='captains hideaway house from the beach' src={property.imgUrl} className='rounded-lg self-center lg-self-start sm-w-5/6 w-full p-2 md-max-w-[400px] md-max-h-[300px] md-m-4' />
 		</Card>
 	);
 }

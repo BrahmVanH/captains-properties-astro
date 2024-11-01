@@ -1,52 +1,60 @@
 ---
-import PropertyCard from "@/components/PropertyCard";
-import type { PropertyCardProps } from "@/types";
-import Layout from "@layouts/Layout.astro"
+import PropertyCard from '@/components/PropertyCard';
+import type { PropertyCardProps } from '@/types';
+import Layout from '@layouts/Layout.astro';
 
+const siteUrl = process.env.PUBLIC_SITE_URL ?? '';
 
-const currentPath = Astro.url.pathname;
+console.log(siteUrl);
 
-let headerUrl: string;
+let headerUrl: string = '';
 
 let cottageCardData: PropertyCardProps['property'] = {
 	title: 'Cottage',
-	imgUrl: "",
+	imgUrl: '',
 	description: 'This is the description for the cottage',
-	urlEndpoint: '/properties/captains-cottage'
-}
+	urlEndpoint: '/properties/captains-cottage',
+};
 
 let hideawayCardData: PropertyCardProps['property'] = {
 	title: 'Hideaway',
-	imgUrl: "",
+	imgUrl: '',
 	description: 'This is the description for the hideaway',
-	urlEndpoint: '/properties/captains-hideaway'
-}
+	urlEndpoint: '/properties/captains-hideaway',
+};
 
 try {
-	const response = await fetch(`${currentPath}api/images/home.json`);
+	const response = await fetch(`http://localhost:4321/api/images/home.json`);
 
 	if (!response.ok) {
 		console.log(response);
 		console.error('Failed to fetch data');
 	}
 	const data = await response.json();
-	const homePgImgs = data.getHomePgImgs;
 
-	headerUrl = homePgImgs.headerImgUrl;
-	cottageCardData.imgUrl = homePgImgs.cottageImgUrl;
-	hideawayCardData.imgUrl = homePgImgs.hideawayImgUrl;
+	console.log('Parsed API response:', data);
 
+	if (data.body) {
+		headerUrl = data.body.headerImgUrl;
+		cottageCardData.imgUrl = data.body.cottageImgUrl;
+		hideawayCardData.imgUrl = data.body.hideawayImgUrl;
 
+		console.log('Updated URLs:', {
+			headerUrl,
+			cottageUrl: cottageCardData.imgUrl,
+			hideawayUrl: hideawayCardData.imgUrl,
+		});
+	} else {
+		console.error('No body in response:', data);
+	}
 } catch (error) {
 	console.error('Failed to fetch data', error);
 }
 ---
 
 <Layout title="Captain's Rentals">
-
 	<main>
-		
-		<img />
+		<img src={headerUrl} alt='arial view of beach near properties'  />
 		<div>
 			<div>
 				<h1>
@@ -55,9 +63,8 @@ try {
 			</div>
 		</div>
 		<div>
-			<PropertyCard property={cottageCardData}/>
-			<PropertyCard property={hideawayCardData}/>
+			<PropertyCard property={cottageCardData} />
+			<PropertyCard property={hideawayCardData} />
 		</div>
-		
 	</main>
 </Layout>

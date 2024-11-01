@@ -9,5 +9,7 @@ import icon from 'astro-icon';
 
 // https://astro.build/config
 export default defineConfig({
+	output: 'server',
+
 	integrations: [react(), tailwind({ applyBaseStyles: false, configFile: './tailwind.config.mjs' }), icon()],
 });

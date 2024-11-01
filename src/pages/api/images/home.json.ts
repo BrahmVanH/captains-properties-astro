@@ -4,25 +4,42 @@ import type { PropertyName } from '@types';
 import { isValidProperty } from '@/lib/helpers';
 
 export const GET: APIRoute = async ({ params, request }) => {
-	const response = await fetch('http://localhost:4000/graphql', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-			query: GET_HOME_IMGS,
-		}),
-	});
+	try {
+		const response = await fetch('http://localhost:4000/graphql', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				query: GET_HOME_IMGS,
+			}),
+		});
 
-	if (!response.ok) {
-		return new Response(response.statusText, { status: response.status });
+		if (!response.ok) {
+			return new Response(response.statusText, { status: response.status });
+		}
+		const { data } = await response.json();
+
+		console.log('data: ', data);
+
+		return new Response(
+			JSON.stringify({
+				status: 200,
+				body: {
+					headerImgUrl: data.getHomePgImgs.headerImgUrl,
+					cottageImgUrl: data.getHomePgImgs.cottageImgUrl,
+					hideawayImgUrl: data.getHomePgImgs.hideawayImgUrl,
+				},
+			})
+		);
+	} catch (error: any) {
+		console.error('API Error:', error);
+		return new Response(
+			JSON.stringify({
+				status: 500,
+				error: error.message,
+			}),
+			{ status: 500 }
+		);
 	}
-	const { data } = await response.json();
-
-	return new Response(
-		JSON.stringify({
-			status: 200,
-			body: data.getHomeyPgImgs,
-		})
-	);
 };
