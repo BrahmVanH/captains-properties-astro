@@ -5,21 +5,20 @@ import Layout from '@layouts/Layout.astro';
 
 const siteUrl = process.env.PUBLIC_SITE_URL ?? '';
 
-console.log(siteUrl);
-
 let headerUrl: string = '';
 
 let cottageCardData: PropertyCardProps['property'] = {
-	title: 'Cottage',
+	title: "Captain's Cottage",
 	imgUrl: '',
-	description: 'This is the description for the cottage',
+	description: '3 acres of private Lake Superior beach front! Located on the North Country Trail. Muskallonge Lake located directly behind the property for great fishing, hiking or kayaking.',
 	urlEndpoint: '/properties/captains-cottage',
 };
 
 let hideawayCardData: PropertyCardProps['property'] = {
-	title: 'Hideaway',
+	title: "Captain's Hideaway",
 	imgUrl: '',
-	description: 'This is the description for the hideaway',
+	description:
+		"This 4 bedroom, 3 full bath home overlooking spectacular Lake Superior is every vacationer's dream. Spend your days hunting for agates on the beaches of Lake Superior, beach access is simply a few steps away from the back porch. If relaxing indoors is more your speed, spend the day lounging in the 4 season room that overlooks miles and miles of unobstructed views of Lake Superior.",
 	urlEndpoint: '/properties/captains-hideaway',
 };
 
@@ -27,23 +26,14 @@ try {
 	const response = await fetch(`http://localhost:4321/api/images/home.json`);
 
 	if (!response.ok) {
-		console.log(response);
 		console.error('Failed to fetch data');
 	}
 	const data = await response.json();
-
-	console.log('Parsed API response:', data);
 
 	if (data.body) {
 		headerUrl = data.body.headerImgUrl;
 		cottageCardData.imgUrl = data.body.cottageImgUrl;
 		hideawayCardData.imgUrl = data.body.hideawayImgUrl;
-
-		console.log('Updated URLs:', {
-			headerUrl,
-			cottageUrl: cottageCardData.imgUrl,
-			hideawayUrl: hideawayCardData.imgUrl,
-		});
 	} else {
 		console.error('No body in response:', data);
 	}
@@ -54,17 +44,50 @@ try {
 
 <Layout title="Captain's Rentals">
 	<main>
-		<img src={headerUrl} alt='arial view of beach near properties'  />
-		<div>
-			<div>
-				<h1>
-					Welcome to Captain's Properties <br /> on Lake Superior
-				</h1>
+		<!-- <img class='w-full' src={headerUrl} alt='arial view of beach near properties' /> -->
+		<div style={{ backgroundImage: `url(${headerUrl})`, backgroundSize: 'cover', backgroundPosition: 'left', backgroundRepeat: 'no-repeat' }}>
+			<div class='bg-overlay h-1/5'>
+				<div class='h-[400px] w-full flex justify-center items-center'>
+					<h1>
+						Welcome to Captain's Properties <br /> <span class="hidden sm:block">
+							on Lake Superior
+							</span>
+					</h1>
+				</div>
 			</div>
 		</div>
-		<div>
+		<div class='[&>*]:mx-auto [&>*]:mt-4 last:mb-4'>
 			<PropertyCard property={cottageCardData} />
 			<PropertyCard property={hideawayCardData} />
 		</div>
 	</main>
 </Layout>
+
+<style>
+	h1 {
+		color: white;
+		overflow-wrap: break-word;
+		font-size: 4rem;
+		text-shadow:
+			-0.5px -0.5px 0 #000,
+			0.5px -0.5px 0 #000,
+			-0.5px 0.5px 0 #000,
+			0.5px 0.5px 0 #000;
+		text-align: center;
+	}
+
+	@media only screen and (max-device-width: 776px) {
+		h1 {
+			width: 80%;
+			font-size: 2.5rem !important;
+			text-align: center;
+			text-shadow:
+				-0.5px -0.5px 0 #747474,
+				0.5px -0.5px 0 #747474,
+				-0.5px 0.5px 0 #747474,
+				0.5px 0.5px 0 #747474;
+		}
+	}
+
+	
+</style>

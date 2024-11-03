@@ -18,7 +18,6 @@ const siteUrl = process.env.PUBLIC_SITE_URL ?? '';
 try {
 	const response = await fetch(`http://localhost:4321/api/images/${slug}.json`);
 	if (!response.ok) {
-		console.log(response);
 		console.error('Failed to fetch data');
 	}
 	const data = await response.json();

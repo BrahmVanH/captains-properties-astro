@@ -20,7 +20,6 @@ export const GET: APIRoute = async ({ params, request }) => {
 		}
 		const { data } = await response.json();
 
-		console.log('data: ', data);
 
 		return new Response(
 			JSON.stringify({
