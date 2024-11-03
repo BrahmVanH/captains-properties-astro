@@ -6,10 +6,11 @@ import activeNav from '@svgs/active_nav_border.svg';
 import type { ImageObject } from '@types';
 import Calendar from '@components/Calendar';
 import type { Property } from '@types';
+import { Icon } from 'astro-icon/components';
+import { Card, CardContent } from '@components/ui/card';
+
 const path = Astro.url.pathname;
 const { slug } = Astro.params;
-import { Icon } from 'astro-icon/components';
-
 
 let heroUrl: string = '';
 let galleryUrls: ImageObject[] = [];
@@ -52,9 +53,9 @@ const property: Property = response.data;
 			</aside>
 
 			<section
-				class='rounded-lg w-full [&>div]:mt-4 last:mb-4 [&>p]:text-sm [&>div]:card [&>div]:min-h-[200px] [&>div]:rounded-sm sm:[&>div]:rounded-lg [&>div]:bg-white [&>div]:p-4 [&>div>h1]:heading-border-bottom'
+				class='bg-transparent rounded-lg w-full [&>div]:mt-4 last:mb-4 [&>p]:text-sm [&>div]:card [&>div]:min-h-[200px] [&>div]:rounded-sm sm:[&>div]:rounded-lg [&>div]:p-4 [&>div>h1]:heading-border-bottom'
 				'>
-				<div class='w-full flex flex-col justify-evenly items-center mt-4  [&>p]:text-sm card min-h-[200px] rounded-sm sm:rounded-lgbg-white p-4 [&>h1]:heading-border-bottom'>
+				<Card className='w-full flex flex-col justify-evenly items-center mt-4  [&>p]:text-sm card min-h-[200px] rounded-sm sm:rounded-lgbg-white p-4 [&>h1]:heading-border-bottom'>
 					<h1 class='heading-border-bottom text-4xl'>{property.titleCard.heading}</h1>
 					<p>{property.titleCard.body}</p>
 					<ul class='w-[80%] flex flex-row justify-evenly [&>li]:ml-4 last:mr-4'>
@@ -62,89 +63,90 @@ const property: Property = response.data;
 							property.titleCard.content.map((item) => (
 								<li>
 									{/* <span class="material-symbols-outlined">{item.icon}</span> */}
-									<Icon name={item.icon} />
-									<p>{item.content}</p>
+									<Icon style={{ margin: '0rem' }} name={item.icon} />
+									<p class='m-0'>{item.content}</p>
 								</li>
 							))
 						}
 					</ul>
-				</div>
-				<div class='[&>div]:mt-4 last:mb-4 [&>p]:text-sm [&>div]:grid [&>div]:grid-cols-[1fr_4fr] [&>*]:items-center [&>div]:card [&>div]:min-h-[200px] [&>div]:rounded-sm sm:[&>div]:rounded-lg [&>div]:bg-white [&>div]:p-4 [&>div>h2]:text-3xl [&>div>h2]:m-2 [&>div>div>h2]:text-3xl [&>div>div>h2]:m-2'>
-
-				{
-					property.overview.map((item, index) => (
-						<div class='w-full  grid grid-cols-[1fr_4fr] [&>*]:items-center '>
-
-							<h2 class='text-left border-0 text-3xl'>{item.heading}</h2>
-							<ul class='flex flex-row justify-evenly [&>li]:ml-4 last:mr-4'>
-								{item.content.map((item) => (
-									<Icon name={item.icon} />
-									<li>{item.content}</li>
-								))}
-							</ul>
+				</Card>
+				<div
+					class='bg-transparent [&>div]:mt-4 last:mb-4 [&>p]:text-sm [&>*]:items-center [&>div]:card [&>div]:min-h-[200px] [&>div]:rounded-sm sm:[&>div]:rounded-lg [&>div]:bg-white [&>div]:p-4 [&>div>h2]:text-3xl [&>div>h2]:m-2 [&>div>div>h2]:text-3xl'>
+					{
+						property.overview.map((item, index) => (
+							<Card className='w-full  grid grid-cols-[1fr_4fr] [&>*]:items-center '>
+								<h2 class='text-left border-0 text-3xl'>{item.heading}</h2>
+								<ul class='flex flex-row justify-evenly '>
+									{item.content.map((item) => (
+										<li class='flex flex-col justify-center items-center'>
+											<h3 class='mb-4'>{item.heading}</h3>
+											<Icon name={item.icon} />
+											{item.content}
+										</li>
+									))}
+								</ul>
+							</Card>
+						))
+					}
+					<Card className='grid grid-cols-[1fr_4fr] [&>*]:items-center'>
+						<h2>About The Property</h2>
+						<div class='text-center px-4 [&>p]:mt-2 last:mb-2'>
+							<p>{property.aboutTheProperty.subHeading}</p>
+							<p>{property.aboutTheProperty.body}</p>
 						</div>
-					))
-				}
-				<div class='grid grid-cols-[1fr_4fr] [&>*]:items-center'>
-					<h2 >About The Property</h2>
-					<div class="text-center px-4 [&>p]:mt-2  last:mb-2">
-						<p >{property.aboutTheProperty.subHeading}</p>
-						<p>{property.aboutTheProperty.body}</p>
-					</div>
-				</div>
-				<div class='flex flex-row'>
-					<h2 class='w-[20%] text-left border-0 text-3xl'>Amenities</h2>
-					<div class='grid grid-cols-5 grid-rows-3 gap-4'>
-						{
-							property.amenities.featured.map((amenitiy) => (
-								<div>
-									<Icon name={amenitiy.icon} />
-									<p>{amenitiy.name}</p>
+					</Card>
+					<Card className='flex flex-row'>
+						<h2 class='w-[20%] text-left  border-0 text-3xl'>Amenities</h2>
+						<div class='grid grid-cols-5 grid-rows-3 gap-4 mx-auto w-full'>
+							{
+								property.amenities.featured.map((amenitiy) => (
+									<div class="flex flex-row ">
+										<Icon size={'20px'} name={amenitiy.icon} />
+										<p class="ml-2"> {amenitiy.name}</p>
+									</div>
+								))
+							}
+						</div>
+					</Card>
+					<Card className='flex flex-col py-4'>
+						<div class='flex flex-row w-full border-b-black'>
+							<h2 class='w-[20%] text-left border-0 text-3xl'>House Rules</h2>
+							<div class='flex flex-col items-center justify-center'>
+								<div class='flex flex-row flex-wrap mt-4'>
+									{property.houseRules.general.map((rule) => <p>{rule}</p>)}
 								</div>
-							))
-						}
-					</div>
-				</div>
-				<div class='flex flex-col'>
-					<div class='flex flex-row'>
-						<h2 class='w-[20%] text-left border-0 text-3xl'>House Rules</h2>
-						<div class='flex flex-col items-center justify-center'>
-							<div class='flex flex-row flex-wrap'>
-								{property.houseRules.general.map((rule) => <p>{rule}</p>)}
-							</div>
-							<div class='grid grid-cols-2 grid-rows-2 gap-4'>
-								{
-									property.houseRules.specific.map((item) => {
-										const formattedHeading = item.heading.charAt(0).toUpperCase() + item.heading.slice(1);
-										return (
-											<div>
-												<h2>{formattedHeading}</h2>
-												<p>{item.content}</p>
-											</div>
-										);
-									})
-								}
-							</div>
-							<div class='flex flex-col'>
-								{property.houseRules.additionalRules.map((rule) => <p>{rule}</p>)}
+								<div class='grid grid-cols-2 grid-rows-2 gap-4 mt-4'>
+									{
+										property.houseRules.specific.map((item) => {
+											const formattedHeading = item.heading.charAt(0).toUpperCase() + item.heading.slice(1);
+											return (
+												<div>
+													<h2 class='text-xl'>{formattedHeading}</h2>
+													<p class='w-[50%]'>{item.content}</p>
+												</div>
+											);
+										})
+									}
+								</div>
+								<div class='flex flex-col my-4 border-b-black'>
+									{property.houseRules.additionalRules.map((rule) => <p>{rule}</p>)}
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class='flex flex-row'>
-						<h2 class='w-[20%] text-left border-0 text-3xl'>Damage & Incidentals</h2>
-						<div>
-							<p>{property.damageAndIncidentals}</p>
+						<div class='flex flex-row w-full border-b-black'>
+							<h2 class='w-[20%] text-left border-0 text-3xl'>Damage & Incidentals</h2>
+							<div class='flex items-center flex-col justify-center'>
+								<p>{property.damageAndIncidentals}</p>
+							</div>
 						</div>
-					</div>
-					<div class='flex flex-row'>
-						<h2 class='w-[20%] text-left border-0 text-3xl'>Important Information</h2>
-						<div class='flex flex-col justify-center items-center'>
-							{property.importantInformation.map((info) => <p>{info}</p>)}
+						<div class='flex flex-row w-full'>
+							<h2 class='w-[20%] text-left border-0 text-3xl'>Important Information</h2>
+							<div class='flex flex-col justify-center items-center'>
+								{property.importantInformation.map((info) => <p>{info}</p>)}
+							</div>
 						</div>
-					</div>
+					</Card>
 				</div>
-				</div>
-
 			</section>
 		</div>
 	</main>
@@ -152,8 +154,16 @@ const property: Property = response.data;
 
 <style>
 	[data-icon] {
-		 color: black;
-  stroke: black;
-  fill: hwb(0 0% 100%);
+		color: black;
+		stroke: black;
+		fill: hwb(0 0% 100%);
+	}
+
+	h2 {
+		align-self: start;
+	}
+
+	h3 {
+		font-size: 22px;
 	}
 </style>
